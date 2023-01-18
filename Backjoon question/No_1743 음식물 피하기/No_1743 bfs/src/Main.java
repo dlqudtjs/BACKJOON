@@ -5,11 +5,11 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int N, M, whiteScore, blueScore;
     static int[] dx = new int[] { -1, 1, 0, 0 };
     static int[] dy = new int[] { 0, 0, -1, 1 };
-    static int[][] map;
-    static boolean[][] visited;
+    static int N, M, cnt;
+    static int maxSize = 0;
+    static boolean[][] map, visited;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -17,62 +17,57 @@ public class Main {
 
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
+        cnt = Integer.parseInt(st.nextToken());
 
-        map = new int[M][N];
-        visited = new boolean[M][N];
+        map = new boolean[N + 1][M + 1];
+        visited = new boolean[N + 1][M + 1];
 
-        // map 생성
-        for (int i = 0; i < M; i++) {
-            String line = br.readLine();
+        for (int i = 0; i < cnt; i++) {
+            st = new StringTokenizer(br.readLine());
+            int x = Integer.parseInt(st.nextToken());
+            int y = Integer.parseInt(st.nextToken());
 
-            for (int j = 0; j < N; j++) {
-                map[i][j] = line.charAt(j); // 문자에 해당하는 아스키 값을 넣는다. (비교할 때 아스키 코드로 비교하기 위해)
-            }
+            map[x][y] = true;
         }
 
-        for (int i = 0; i < M; i++) {
-            for (int j = 0; j < N; j++) {
-                if (!visited[i][j]) {
+        // 주의해야 할 점! 좌표가 주어지고 해당 좌표까지 순회해햐 할 때 조건식에 <=을 붙여 끝까지 순회하도록 하자!(30분 삽질)
+        for (int i = 1; i <= N; i++) {
+            for (int j = 1; j <= M; j++) {
+                if (!visited[i][j] && map[i][j]) {
                     bfs(i, j);
                 }
             }
         }
 
-        System.out.println(whiteScore + " " + blueScore);
+        System.out.println(maxSize);
     }
 
     public static void bfs(int startX, int startY) {
         Queue<int[]> myQueue = new LinkedList<>();
-        int cnt = 0;
-        int team = map[startX][startY];
+        int currSize = 1;
         myQueue.add(new int[] { startX, startY });
         visited[startX][startY] = true;
 
         while (!myQueue.isEmpty()) {
-            int now[] = myQueue.poll();
-            cnt++;
+            int[] now = myQueue.poll();
 
             for (int i = 0; i < 4; i++) {
                 int x = now[0] + dx[i];
                 int y = now[1] + dy[i];
 
-                if (x < 0 || x >= M || y < 0 || y >= N) { // 범위 밖이거나
+                if (x < 0 || x > N || y < 0 || y > M) { // 맵 범위를 벗어나거나
                     continue;
                 }
-                if (visited[x][y] || map[x][y] != team) { // 방문 했거나, 같은 팀이 아니거나
+                if (visited[x][y] || !map[x][y]) { // 방문한 곳이거나 맵에 음식이 없는 곳일 때
                     continue;
                 }
 
                 myQueue.add(new int[] { x, y });
                 visited[x][y] = true;
+                currSize++;
             }
         }
 
-        // 팀 점수
-        if (team == 'W') {
-            whiteScore += cnt * cnt;
-        } else {
-            blueScore += cnt * cnt;
-        }
+        maxSize = (maxSize > currSize) ? maxSize : currSize;
     }
 }

@@ -48,12 +48,12 @@ public class Main {
             }
         }
 
-        bfs(startX, startY);
+        bfs(startX, startY, endX, endY);
 
         System.out.println(visited[endX][endY] - 1); // 거울의 수는 -1
     }
 
-    public static void bfs(int startX, int startY) {
+    public static void bfs(int startX, int startY, int endX, int endY) {
         Queue<int[]> myQueue = new LinkedList<>();
         myQueue.add(new int[] { startX, startY });
         visited[startX][startY] = 0;
@@ -69,23 +69,33 @@ public class Main {
                     x += dx[i];
                     y += dy[i];
 
-                    if (x < 0 || x >= H || y < 0 || y >= W) { // 범위를 벗어날 때
-                        break;
-                    }
-                    if (map[x][y] == '*') { // 벽일 때
+                    if (x < 0 || x >= H || y < 0 || y >= W || map[x][y] == '*') { // 범위를 벗어날 때, 벽일 때
                         break;
                     }
 
-                    // 현재 위치가 갈 곳보다 크거나 같을 경우, 이미 방문 한 곳일 경우
-                    // &&로 묶었기 때문에 하나의 조건이라도 만족하지 않다면 방문하게 된다.
-                    if (visited[x][y] <= visited[now[0]][now[1]] && visited[x][y] != Integer.MAX_VALUE) {
+                    if (visited[x][y] == Integer.MAX_VALUE) { // 방문 안 했을 때만
+                        visited[x][y] = visited[now[0]][now[1]] + 1;
+                        if (x == endX && y == endY) {
+                            return;
+                        }
+                        myQueue.add(new int[] { x, y });
+                    } else if (visited[x][y] <= visited[now[0]][now[1]]) {
                         break;
                     }
-
-                    visited[x][y] = visited[now[0]][now[1]] + 1;
-                    myQueue.add(new int[] { x, y });
                 }
             }
         }
     }
 }
+
+// if (visited[x][y] <= visited[now[0]][now[1]] && visited[x][y] !=
+// Integer.MAX_VALUE) {
+// break;
+// }
+// visited[x][y] = visited[now[0]][now[1]] + 1;
+// myQueue.add(new int[] { x, y });
+// 76 ~ 83 코드 대신 쓴 코드다. 재채점 후 메모리초과가 떴다.
+// 그 이유는 원래 코드는 방문을 한 곳과 현재 위치가 갈 위치보다 크거나 같을 때(현재 위치가 더 작을 때만 이동)만 break를
+// 하는 로직이기 때문에, 그렇게 되면 현재 위치가 더 작다면 queue에 삽입하여 방문했던 곳을 한번 더 방문하여 4면을 확인하기 때문에
+// 메모리 초과가 떴다. 그렇기 때문에 방문을 안 한곳만 queue에 넣고 가는 방향에 방문한 곳이 있더라도 현재 위치보다 같거나 크지만
+// 않으면 그 방향으로 x와 y를 증감시켜 그 다음까지 확인한다. (queue에 굳이 넣지 않음)

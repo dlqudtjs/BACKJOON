@@ -37,7 +37,7 @@ public class Main {
             bags[i] = Integer.parseInt(br.readLine());
         }
 
-        Arrays.sort(jewelrys, (e1, e2) -> { // 보석무게 내림차순 (작은 가방부터 채워야하기 때문)
+        Arrays.sort(jewelrys, (e1, e2) -> { // 보석무게 오름차순 (작은 가방부터 채워야하기 때문)
             return e1.m - e2.m;
         });
 

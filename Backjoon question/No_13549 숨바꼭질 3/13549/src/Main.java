@@ -40,6 +40,7 @@ public class Main {
                 }
 
                 if (i == 2) {
+                    // > 로 설정 시 0인덱스에서 0 * 2 에서 무한루프가 돌아 >=로 변경하였음
                     if (distance[arr[i]] != 0 && distance[x] >= distance[arr[i]]) {
                         continue;
                     }
@@ -54,7 +55,6 @@ public class Main {
                     distance[arr[i]] = distance[x] + 1;
                     queue.add(arr[i]);
                 }
-
             }
         }
 

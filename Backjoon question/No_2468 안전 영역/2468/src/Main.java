@@ -20,6 +20,7 @@ public class Main {
 
         int min = 101;
         int max = 1;
+
         for (int i = 0; i < N; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
             for (int j = 0; j < N; j++) {
@@ -29,11 +30,11 @@ public class Main {
             }
         }
 
-        for (int i = min; i <= max; i++) {
-
+        for (int i = min - 1; i <= max; i++) {
             check(i);
-
         }
+
+        System.out.println(maxCnt);
     }
 
     public static void check(int height) {
@@ -45,9 +46,10 @@ public class Main {
             for (int j = 0; j < N; j++) {
 
                 // 방문했거나, 물에 잠겼거나
-                if (visited[i][j] && map[i][j] <= height) {
+                if (visited[i][j] || map[i][j] <= height) {
                     continue;
                 }
+                cnt++;
 
                 queue.add(new int[] { i, j });
                 visited[i][j] = true;
@@ -64,7 +66,8 @@ public class Main {
                             continue;
                         }
 
-                        if (visited[x][y] && map[x][y] <= height) {
+                        // 방문했거나 물에 잠겼거나
+                        if (visited[x][y] || map[x][y] <= height) {
                             continue;
                         }
 
@@ -73,7 +76,6 @@ public class Main {
                     }
                 }
 
-                cnt++;
             }
         }
 

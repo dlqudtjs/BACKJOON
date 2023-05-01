@@ -5,7 +5,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        String n = br.readLine();
+        String n = br.readbLine();
 
         if (n.equals("0")) {
             System.out.println(0);

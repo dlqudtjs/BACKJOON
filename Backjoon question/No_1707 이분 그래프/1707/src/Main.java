@@ -1,39 +1,62 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static StringTokenizer st;
-    static int[] graph;
-    static char[] visited;
-    static boolean flag;
+    static StringBuilder sb = new StringBuilder();
+    static ArrayList<Integer>[] nodes;
+    static int visited[];
+    static int V, E;
+    static boolean flag = false;
 
     public static void main(String[] args) throws Exception {
-        StringBuilder sb = new StringBuilder();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+
         int T = Integer.parseInt(br.readLine());
 
         for (int i = 0; i < T; i++) {
             flag = false;
             st = new StringTokenizer(br.readLine());
 
-            int V = Integer.parseInt(st.nextToken());
-            int E = Integer.parseInt(st.nextToken());
+            V = Integer.parseInt(st.nextToken());
+            E = Integer.parseInt(st.nextToken());
 
-            inputGraph(V, E);
+            nodes = new ArrayList[V + 1]; // 한 노드에 연결돼 있는 노드가 여러개 있을 수 있다.
+            visited = new int[V + 1];
 
-            visited = new char[V + 1];
-            visited[1] = 'L';
-
-            for (int j = 1; j <= V; j++) {
-                checkGraph(j);
+            for (int j = 0; j <= V; j++) {
+                nodes[j] = new ArrayList<>();
             }
 
-            if (flag) {
-                sb.append("NO").append("\n");
-            } else {
+            for (int j = 0; j < E; j++) {
+                st = new StringTokenizer(br.readLine());
+                int node = Integer.parseInt(st.nextToken());
+                int nextNode = Integer.parseInt(st.nextToken());
+
+                nodes[node].add(nextNode); // 현재 노드와 연결된 노드를 node배열에 넣는다.
+                nodes[nextNode].add(node); // 반대도 넣어줌
+            }
+
+            Queue<Integer> queue = new LinkedList<>();
+
+            for (int j = 1; j < V; j++) {
+                if (visited[j] == 0) { // 방문하지 않았다면 queue에 넣고 1로 초기화한다.
+                    queue.add(j);
+                    visited[j] = 1;
+                    bfs(j, queue);
+                }
+
+                if (flag) {
+                    sb.append("NO").append("\n");
+                    break;
+                }
+            }
+
+            if (!flag) {
                 sb.append("YES").append("\n");
             }
         }
@@ -41,59 +64,33 @@ public class Main {
         System.out.println(sb);
     }
 
-    private static void checkGraph(int n) {
-        if (graph[n] == 0) {
-            return;
-        }
-        int node = graph[n];
+    private static void bfs(int n, Queue<Integer> queue) {
+        while (!queue.isEmpty()) {
+            int now = queue.poll();
 
-        if (visited[n] != '\0') { // 이미 값을 가지고 있을 때
-            if (visited[n] == visited[node]) {
-                flag = true;
-                return;
+            for (int j = 0; j < nodes[now].size(); j++) {
+                if (visited[nodes[now].get(j)] == 0) { // 연결된 노드의 가중치가 없다면
+                    // 현재 노드와 반대로 연결 노드의 가중치를 설정한다.
+                    if (visited[now] == 1) {
+                        visited[nodes[now].get(j)] = 2;
+                    } else {
+                        visited[nodes[now].get(j)] = 1;
+                    }
+
+                    // 그 후 연결 노드를 queue에 넣는다.
+                    queue.add(nodes[now].get(j));
+                }
+
+                // 현재 노드와 연결된 노드의 가중치가 같다면 이분 그래프가 아니다.
+                if (visited[nodes[now].get(j)] == visited[now]) {
+                    flag = true;
+                    return;
+                }
             }
-
-            if (visited[node] != '\0') {
-                return;
-            }
-
-            if (visited[n] == 'L') {
-                visited[node] = 'R';
-            } else {
-                visited[node] = 'L';
-            }
-
-            return;
-        }
-
-        if (visited[node] != '\0') { // n과 이어져 있는 node가 값을 가지고 있을 때
-            if (visited[node] == 'L') {
-                visited[n] = 'R';
-            } else {
-                visited[n] = 'L';
-            }
-
-            return;
-        }
-
-        if (visited[n] == 'L') { // n과 n이 이어지는 노드가 값을 가지고 있지 않을 때
-            visited[node] = 'R';
-        } else {
-            visited[node] = 'L';
-        }
-
-        checkGraph(node);
-    }
-
-    private static void inputGraph(int V, int E) throws Exception {
-        graph = new int[V + 1];
-
-        for (int i = 1; i <= E; i++) {
-            st = new StringTokenizer(br.readLine());
-            int node1 = Integer.parseInt(st.nextToken());
-            int node2 = Integer.parseInt(st.nextToken());
-
-            graph[node1] = node2;
         }
     }
 }
+
+/*
+ * 참고로 모두 떨어진 노드는 이분 그래프이다.
+ */

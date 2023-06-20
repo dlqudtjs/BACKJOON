@@ -51,12 +51,7 @@ public class Main {
             return false;
         }
 
-        if (fromParent > toParent) {
-            parent[fromParent] = toParent;
-        } else {
-            parent[toParent] = fromParent;
-        }
-
+        parent[toParent] = fromParent;
         return true;
     }
 

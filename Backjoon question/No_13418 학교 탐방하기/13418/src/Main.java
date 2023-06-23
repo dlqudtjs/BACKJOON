@@ -8,6 +8,7 @@ public class Main {
     static PriorityQueue<Node> ascQ = new PriorityQueue<>();
     static PriorityQueue<Node> descQ = new PriorityQueue<>(Collections.reverseOrder());
 
+    
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());

@@ -13,6 +13,7 @@ public class Main {
             int x1 = Integer.parseInt(st.nextToken());
             int y1 = Integer.parseInt(st.nextToken());
             int r1 = Integer.parseInt(st.nextToken());
+
             int x2 = Integer.parseInt(st.nextToken());
             int y2 = Integer.parseInt(st.nextToken());
             int r2 = Integer.parseInt(st.nextToken());
@@ -41,9 +42,9 @@ public class Main {
         } else if (distance == Math.pow(r2 + r1, 2)) {
             // 두 원의 거리와 두 원의 반지름 합이 같을 때 (접점이 하나)
             return 1;
+        } else {
+            // 위에 조건들이 맞지 않으면 접점이 두 개다.
+            return 2;
         }
-
-        // 위에 조건들이 맞지 않으면 접점이 두 개다.
-        return 2;
     }
 }

@@ -7,10 +7,15 @@ public class Main {
 
         String str = br.readLine();
         String find = br.readLine();
-        int index = 0;
+        int answer = 0;
 
-        for (int i = 0; i < str.length() - find.length(); i++) {
-
+        for (int i = 0; i < str.length() - find.length() + 1; i++) {
+            if (str.substring(i, i + find.length()).equals(find)) {
+                answer++;
+                i += find.length() - 1; // - 1의 이유: for문에서 i++을 한 번 더 하기 때문
+            }
         }
+
+        System.out.println(answer);
     }
 }

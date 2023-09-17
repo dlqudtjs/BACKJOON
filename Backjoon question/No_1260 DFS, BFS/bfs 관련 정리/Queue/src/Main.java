@@ -35,7 +35,7 @@ public class Main {
     }
 
     public static void bfs(int node) {
-        // Queue 인터페이스 구현을 위해 LinkedList를 통해서 생성한다.
+        // Queue 인터페이스 구현체 = LinkedList
         Queue<Integer> myQueue = new LinkedList<>();
         myQueue.add(node);
         visited[node] = true;

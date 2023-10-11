@@ -20,7 +20,6 @@ public class Main {
         dfs(0);
 
         System.out.println(sb);
-
     }
 
     private static void dfs(int index) {

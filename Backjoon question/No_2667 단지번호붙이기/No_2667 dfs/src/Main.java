@@ -21,6 +21,7 @@ public class Main {
 
         for (int i = 0; i < N; i++) {
             String line = br.readLine();
+
             for (int j = 0; j < N; j++) {
                 map[i][j] = line.charAt(j) - 48;
             }

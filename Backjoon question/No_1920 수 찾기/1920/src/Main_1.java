@@ -50,7 +50,6 @@ public class Main_1 {
             }
             // key 값과 mid 값이 같을 경우
             return mid;
-
         }
 
         return -1;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class Main_1 {
     static ArrayList<Node>[] nodes;
     static int dp[];
     static boolean[] visited;

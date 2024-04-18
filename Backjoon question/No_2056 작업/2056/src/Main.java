@@ -34,9 +34,9 @@ public class Main {
             int count = Integer.parseInt(st.nextToken());
             for (int j = 0; j < count; j++) {
                 int task = Integer.parseInt(st.nextToken());
-                tasks.get(i).add(task);
+                tasks.get(task).add(i);
 
-                entryCount[task]++;
+                entryCount[i]++;
             }
         }
 

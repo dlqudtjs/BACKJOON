@@ -1,9 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -12,33 +9,46 @@ public class Main {
         StringTokenizer st;
 
         int n = Integer.parseInt(br.readLine());
-        Map<Integer, Integer> map = new HashMap<>();
-        Set<Integer> set = new HashSet<>();
+        int[] arr = new int[n];
 
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < n; i++) {
-            int num = Integer.parseInt(st.nextToken());
-            set.add(num);
-            map.put(num, map.getOrDefault(num, 0) + 1);
+            arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        int count = 0;
-        for (int i : set) {
-            for (int j : set) {
-                if (map.containsKey(i - j)) {
-                    if (i == j && map.get(j) < 3) {
-                        continue;
-                    }
-                    if ((i - j) == j && map.get(j) < 2) {
-                        continue;
+        Arrays.sort(arr);
+        int answer = 0;
+
+        for (int i = 0; i < n; i++) {
+            int left = 0;
+            int right = n - 1;
+
+            while (left < right) {
+                int sum = arr[left] + arr[right];
+
+                if (sum == arr[i]) {
+                    if (left != i && right != i) {
+                        answer++;
+                        break;
                     }
 
-                    count += 1 * map.get(i);
-                    break;
+                    if (left == i) {
+                        left++;
+                    } else {
+                        right--;
+                    }
+
+                    continue;
+                }
+
+                if (arr[i] > sum) {
+                    left++;
+                } else {
+                    right--;
                 }
             }
         }
 
-        System.out.println(count);
+        System.out.println(answer);
     }
 }
